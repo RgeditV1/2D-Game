@@ -251,7 +251,7 @@ speed = 150.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="frog"]
 sprite_frames = SubResource("SpriteFrames_ur2jq")
-animation = &"salto"
+animation = &"salto doble"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="frog"]
 position = Vector2(0.5, 3.5)
