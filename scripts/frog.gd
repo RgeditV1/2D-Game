@@ -1,39 +1,33 @@
 extends CharacterBody2D
 
 @onready var jugador = $AnimatedSprite2D
+@onready var frog: CharacterBody2D = $"."
+
+"""ZONA DE SEÑALES"""
+
 
 """ZONA DE EXPORTS"""
 
 @export_category("Configuracion")
 @export var speed: float
 @export var vel_salto: float = 400.0
+
 var gravedad = ProjectSettings.get_setting("physics/2d/default_gravity")
 var mirando_derecha: bool = true
+var doble_salto: bool = false #define si puede hacer el doble salto
 
 func _ready() -> void:
 	jugador.play("parado")
 	
-#region sistema de salto y gravedad
-func dobleSalto() ->void:
-	pass
-
+#region sistema de salto y gravedad	
 func salto(delta):
 	
 	if (Input.is_action_pressed("w") and is_on_floor()):
 		velocity.y = -vel_salto
-		
-	if(not is_on_floor()):
-		jugador.play("salto")
-		velocity.y += gravedad * delta
-	
-#endregion
-
-#region animaciones
-func animaciones():
-	if (velocity.x != 0):
-		jugador.play("correr")
-	else:
-		jugador.play("parado")
+		doble_salto = true
+	if(Input.is_action_just_pressed("w") and not is_on_floor() and doble_salto == true):
+		velocity.y = -vel_salto / 1.5
+		doble_salto = false
 #endregion
 
 #region Movimientos
@@ -48,8 +42,8 @@ func movimiento() -> void:
 	
 	move_and_slide()
 #endregion
-		
+
+"""BUCLE PRINCIPAL"""
 func _physics_process(delta: float) -> void:	
 	movimiento()
-	animaciones()
 	salto(delta)
